@@ -4,12 +4,13 @@ extends KinematicBody2D
 var walk_force:Vector2 = Vector2.RIGHT * 600.0
 var walk_force_max:Vector2 = Vector2.RIGHT * 150.0
 var friction_force:Vector2 = Vector2.LEFT * 900.0
-var jump_force:Vector2 = Vector2.UP * 350.0
-var double_jump_force:Vector2 = Vector2.UP * 250.0
+var air_resist_force:Vector2 = Vector2.LEFT * 100.0
+var jump_force:Vector2 = Vector2.UP * 325.0
+var double_jump_force:Vector2 = Vector2.UP * 275.0
 var gravity_force:Vector2 = Vector2.DOWN * 1000.0
 var terminal_velocity:Vector2 = Vector2.DOWN * 450.0
 var wall_slide_max_velocity:Vector2 = Vector2.DOWN * 75.0
-var wall_jump_force:Vector2 = Vector2.UP * 350.0 + Vector2.RIGHT * 300.0
+var wall_jump_force:Vector2 = Vector2.UP * 350.0 + Vector2.RIGHT * 100.0
 
 
 var velocity:Vector2
@@ -55,15 +56,25 @@ func _physics_process(delta):
 	# Apply motion
 	velocity = move_and_slide(velocity, Vector2.UP)
 	# Friction
-	if invec.x == 0.0 and is_on_floor():
-		if velocity.x > 0.0:
-			velocity.x += friction_force.x
-			if velocity.x < 0.0:
-				velocity.x = 0.0
-		if velocity.x < 0.0:
-			velocity.x -= friction_force.x
+	if invec.x == 0.0:
+		if is_on_floor():
 			if velocity.x > 0.0:
-				velocity.x = 0.0
+				velocity.x += friction_force.x * delta
+				if velocity.x < 0.0:
+					velocity.x = 0.0
+			if velocity.x < 0.0:
+				velocity.x -= friction_force.x * delta
+				if velocity.x > 0.0:
+					velocity.x = 0.0
+		else:
+			if velocity.x > 0.0:
+				velocity.x += air_resist_force.x * delta
+				if velocity.x < 0.0:
+					velocity.x = 0.0
+			if velocity.x < 0.0:
+				velocity.x -= air_resist_force.x * delta
+				if velocity.x > 0.0:
+					velocity.x = 0.0
 	# Check for wall slides
 	is_wall_slide_left = $LeftWallRay.is_colliding()
 	is_wall_slide_right = $RightWallRay.is_colliding()
