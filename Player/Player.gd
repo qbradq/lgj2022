@@ -80,3 +80,5 @@ func _physics_process(delta):
 		$Sprite.flip_h = true
 	elif invec.x > 0.0:
 		$Sprite.flip_h = false
+	# Wall slide animation
+	$WallSlideParticles.emitting = is_wall_slide and not is_on_floor() and velocity.y > 0.0
