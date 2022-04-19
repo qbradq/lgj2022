@@ -1,6 +1,9 @@
 extends KinematicBody2D
 
 
+var bullet_scene:PackedScene = preload("res://Player/PlayerBullet.tscn")
+
+
 var walk_force:Vector2 = Vector2.RIGHT * 600.0
 var walk_force_max:Vector2 = Vector2.RIGHT * 150.0
 var friction_force:Vector2 = Vector2.LEFT * 900.0
@@ -21,6 +24,7 @@ var is_wall_slide:bool
 
 
 func _input(event):
+	# Jump
 	if event.is_action_pressed("ui_accept"):
 		if is_on_floor():
 			velocity.y = jump_force.y
@@ -34,6 +38,13 @@ func _input(event):
 		elif can_double_jump:
 			velocity.y = double_jump_force.y
 			can_double_jump = false
+	# Shoot
+	if event.is_action_pressed("ui_cancel"):
+		var b := bullet_scene.instance()
+		b.global_position = $ShotPosition.global_position
+		if $Sprite.flip_h:
+			b.velocity.x *= -1
+		get_parent().get_parent().add_child(b)
 
 
 func _physics_process(delta):
