@@ -18,6 +18,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [ 0 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:material:shader_param/white_progress")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.0 ]
+}
 
 [sub_resource type="Animation" id=2]
 resource_name = "Walk"
@@ -41,7 +53,7 @@ tracks/0/keys = {
 script = ExtResource( 3 )
 
 [node name="AnimationPlayer" parent="." index="0"]
-autoplay = "Walk"
+autoplay = ""
 anims/RESET = SubResource( 1 )
 anims/Walk = SubResource( 2 )
 
@@ -59,10 +71,10 @@ position = Vector2( 0, -2 )
 cast_to = Vector2( 7, 0 )
 
 [node name="LeftFloorRayCast" parent="." index="4"]
-position = Vector2( -8, -2 )
+position = Vector2( -7, -2 )
 
 [node name="RightFloorRayCast" parent="." index="5"]
-position = Vector2( 8, -2 )
+position = Vector2( 7, -2 )
 
 [node name="CollisionShape2D" parent="." index="6"]
 position = Vector2( 0, -8 )
