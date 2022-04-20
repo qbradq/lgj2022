@@ -8,11 +8,37 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://Enemy/Enemy.gd"
+}, {
+"base": "Enemy",
+"class": "EnemySquish",
+"language": "GDScript",
+"path": "res://Enemy/Squish/Squish.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://Player/Player.gd"
+} ]
+_global_script_class_icons={
+"Enemy": "",
+"EnemySquish": "",
+"Player": ""
+}
+
 [application]
 
 config/name="lgj2022"
 run/main_scene="res://Room/Test/Test1.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Global="*res://AutoLoad/Global.gd"
 
 [display]
 
@@ -81,6 +107,12 @@ ui_down={
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":1,"axis_value":1.0,"script":null)
  ]
 }
+
+[layer_names]
+
+2d_physics/layer_1="World"
+2d_physics/layer_2="Player"
+2d_physics/layer_3="Enemy"
 
 [physics]
 

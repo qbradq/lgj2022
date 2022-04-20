@@ -1,4 +1,5 @@
 extends KinematicBody2D
+class_name Player
 
 
 var bullet_scene:PackedScene = preload("res://Player/PlayerBullet.tscn")
@@ -10,7 +11,6 @@ var friction_force:Vector2 = Vector2.LEFT * 900.0
 var air_resist_force:Vector2 = Vector2.LEFT * 100.0
 var jump_force:Vector2 = Vector2.UP * 325.0
 var double_jump_force:Vector2 = Vector2.UP * 275.0
-var gravity_force:Vector2 = Vector2.DOWN * 1000.0
 var terminal_velocity:Vector2 = Vector2.DOWN * 450.0
 var wall_slide_max_velocity:Vector2 = Vector2.DOWN * 75.0
 var wall_jump_force:Vector2 = Vector2.UP * 350.0 + Vector2.RIGHT * 100.0
@@ -57,7 +57,7 @@ func _physics_process(delta):
 	if velocity.x < -walk_force_max.x:
 		velocity.x = -walk_force_max.x
 	# Gravity
-	velocity += gravity_force * delta
+	velocity += Global.gravity_force * delta
 	if is_wall_slide:
 		if velocity.y > wall_slide_max_velocity.y:
 			velocity.y = wall_slide_max_velocity.y
