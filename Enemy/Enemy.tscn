@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Enemy/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -45,7 +45,12 @@ shader = SubResource( 7 )
 shader_param/white_progress = 0.0
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 7, 7 )
+resource_local_to_scene = true
+extents = Vector2( 32, 31.5 )
+
+[sub_resource type="RectangleShape2D" id=9]
+resource_local_to_scene = true
+extents = Vector2( 32, 8 )
 
 [node name="Enemy" type="KinematicBody2D"]
 collision_layer = 4
@@ -85,5 +90,15 @@ enabled = true
 cast_to = Vector2( 0, 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -32 )
+position = Vector2( 0, -32.5 )
 shape = SubResource( 1 )
+
+[node name="StompArea" type="Area2D" parent="."]
+position = Vector2( 0, -72 )
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StompArea"]
+shape = SubResource( 9 )
+
+[connection signal="body_entered" from="StompArea" to="." method="_on_StompArea_body_entered"]

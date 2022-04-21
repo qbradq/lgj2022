@@ -51,3 +51,7 @@ func hurt(damage:int):
 func die():
 	queue_free()
 
+
+
+func _on_StompArea_body_entered(body):
+	print("bounce")
