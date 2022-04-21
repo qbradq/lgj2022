@@ -2,7 +2,11 @@ extends KinematicBody2D
 class_name Enemy
 
 
+const IFRAMES = 0.2
+
+
 export var walk_speed:float = 50.0
+export var hit_points:int = 1
 
 
 var velocity:Vector2
@@ -38,5 +42,12 @@ func walk():
 func hurt(damage:int):
 	if iframes:
 		return
-	iframes += 0.4
-	$AnimationPlayer.play("Hurt")
+	iframes = IFRAMES
+	hit_points -= damage
+	if hit_points <= 0:
+		die()
+
+
+func die():
+	queue_free()
+

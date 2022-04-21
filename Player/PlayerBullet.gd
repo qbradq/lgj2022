@@ -11,3 +11,4 @@ func _physics_process(delta):
 func _on_PlayerBullet_body_entered(body):
 	if body is Enemy:
 		body.hurt(1)
+	$AnimationPlayer.play("Hit")
