@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Enemy/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
@@ -70,11 +70,15 @@ shader_param/white_progress = 0.0
 
 [sub_resource type="RectangleShape2D" id=1]
 resource_local_to_scene = true
-extents = Vector2( 8, 7.5 )
+extents = Vector2( 8, 8 )
+
+[sub_resource type="RectangleShape2D" id=10]
+resource_local_to_scene = true
+extents = Vector2( 16, 12 )
 
 [sub_resource type="RectangleShape2D" id=9]
 resource_local_to_scene = true
-extents = Vector2( 8, 4 )
+extents = Vector2( 16, 4 )
 
 [node name="Enemy" type="KinematicBody2D"]
 collision_layer = 4
@@ -116,8 +120,16 @@ enabled = true
 cast_to = Vector2( 0, 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -8.5 )
+position = Vector2( 0, -8 )
 shape = SubResource( 1 )
+
+[node name="HurtArea" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtArea"]
+position = Vector2( 0, -4 )
+shape = SubResource( 10 )
 
 [node name="BounceArea" type="Area2D" parent="."]
 position = Vector2( 0, -72 )
@@ -156,4 +168,5 @@ initial_velocity = 30.0
 initial_velocity_random = 1.0
 scale_amount = 2.0
 
+[connection signal="body_entered" from="HurtArea" to="." method="_on_HurtArea_body_entered"]
 [connection signal="body_entered" from="BounceArea" to="." method="_on_StompArea_body_entered"]

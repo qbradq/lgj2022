@@ -16,6 +16,7 @@ var wall_slide_max_velocity:Vector2 = Vector2.DOWN * 75.0
 var wall_jump_force:Vector2 = Vector2.UP * 350.0 + Vector2.RIGHT * 100.0
 var bounce_force:Vector2 = Vector2.UP * 150.0
 var big_bounce_force:Vector2 = Vector2.UP * 350.0
+var hurt_force:Vector2 = Vector2.UP * 150.0 + Vector2.RIGHT * 100.0
 
 
 var velocity:Vector2
@@ -23,9 +24,12 @@ var can_double_jump:bool
 var is_wall_slide_left:bool
 var is_wall_slide_right:bool
 var is_wall_slide:bool
+var control_lockout_ttl:float
 
 
 func _input(event):
+	if control_lockout_ttl > 0.0:
+		return
 	# Jump
 	if event.is_action_pressed("ui_accept"):
 		if is_on_floor():
@@ -50,14 +54,16 @@ func _input(event):
 
 
 func _physics_process(delta):
+	var invec:Vector2
 	# Input
-	var invec := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	# Movement
-	velocity.x += invec.x * walk_force.x * delta
-	if velocity.x > walk_force_max.x:
-		velocity.x = walk_force_max.x
-	if velocity.x < -walk_force_max.x:
-		velocity.x = -walk_force_max.x
+	control_lockout_ttl -= delta
+	if control_lockout_ttl <= 0.0:
+		invec = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+		velocity.x += invec.x * walk_force.x * delta
+		if velocity.x > walk_force_max.x:
+			velocity.x = walk_force_max.x
+		if velocity.x < -walk_force_max.x:
+			velocity.x = -walk_force_max.x
 	# Gravity
 	velocity += Global.gravity_force * delta
 	if is_wall_slide:
@@ -120,3 +126,10 @@ func bounce(from):
 		velocity.y = big_bounce_force.y
 	else:
 		velocity.y = bounce_force.y
+
+
+func hurt(amount:int, from:Vector2):
+	velocity = hurt_force
+	if global_position.x < from.x:
+		velocity.x *= -1
+	control_lockout_ttl = 0.25

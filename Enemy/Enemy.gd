@@ -61,6 +61,8 @@ func turn_off():
 	$RightFloorRayCast.collision_mask = 0
 	$BounceArea.collision_layer = 0
 	$BounceArea.collision_mask = 0
+	$HurtArea.collision_layer = 0
+	$HurtArea.collision_mask = 0
 
 
 func die():
@@ -77,3 +79,7 @@ func get_bounced_on(from):
 	$Timer.start(0.5)
 	yield($Timer, "timeout")
 	queue_free()
+
+
+func _on_HurtArea_body_entered(body):
+	body.hurt(1, global_position)
