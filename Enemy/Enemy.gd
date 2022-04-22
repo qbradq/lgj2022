@@ -65,7 +65,10 @@ func turn_off():
 
 func die():
 	turn_off()
-	$AnimationPlayer.play("Die")
+	$DieParticles.emitting = true
+	$Timer.start(0.5)
+	yield($Timer, "timeout")
+	queue_free()
 
 
 func get_bounced_on(from):

@@ -70,11 +70,11 @@ shader_param/white_progress = 0.0
 
 [sub_resource type="RectangleShape2D" id=1]
 resource_local_to_scene = true
-extents = Vector2( 32, 31.5 )
+extents = Vector2( 8, 7.5 )
 
 [sub_resource type="RectangleShape2D" id=9]
 resource_local_to_scene = true
-extents = Vector2( 32, 8 )
+extents = Vector2( 8, 4 )
 
 [node name="Enemy" type="KinematicBody2D"]
 collision_layer = 4
@@ -90,33 +90,33 @@ anims/RESET = SubResource( 5 )
 
 [node name="Sprite" type="Sprite" parent="."]
 material = SubResource( 8 )
-position = Vector2( 0, -32 )
+position = Vector2( 0, -8 )
 texture = ExtResource( 2 )
 
 [node name="LeftWallRayCast" type="RayCast2D" parent="."]
-position = Vector2( 0, -30 )
+position = Vector2( 0, -8 )
 enabled = true
 cast_to = Vector2( -30, 0 )
 collision_mask = 5
 
 [node name="RightWallRayCast" type="RayCast2D" parent="."]
-position = Vector2( 0, -30 )
+position = Vector2( 0, -8 )
 enabled = true
 cast_to = Vector2( 30, 0 )
 collision_mask = 5
 
 [node name="LeftFloorRayCast" type="RayCast2D" parent="."]
-position = Vector2( -30, -2 )
+position = Vector2( -4, -2 )
 enabled = true
 cast_to = Vector2( 0, 4 )
 
 [node name="RightFloorRayCast" type="RayCast2D" parent="."]
-position = Vector2( 30, -2 )
+position = Vector2( 4, -2 )
 enabled = true
 cast_to = Vector2( 0, 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, -32.5 )
+position = Vector2( 0, -8.5 )
 shape = SubResource( 1 )
 
 [node name="BounceArea" type="Area2D" parent="."]
@@ -125,6 +125,7 @@ collision_layer = 8
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BounceArea"]
+position = Vector2( 0, 52 )
 shape = SubResource( 9 )
 
 [node name="SquishParticles" type="CPUParticles2D" parent="."]
@@ -139,6 +140,19 @@ direction = Vector2( 0, 1 )
 spread = 90.0
 gravity = Vector2( 0, 0 )
 initial_velocity = 20.0
+initial_velocity_random = 1.0
+scale_amount = 2.0
+
+[node name="DieParticles" type="CPUParticles2D" parent="."]
+position = Vector2( 0, -8 )
+emitting = false
+amount = 32
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+spread = 180.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 30.0
 initial_velocity_random = 1.0
 scale_amount = 2.0
 
