@@ -14,6 +14,8 @@ var double_jump_force:Vector2 = Vector2.UP * 275.0
 var terminal_velocity:Vector2 = Vector2.DOWN * 450.0
 var wall_slide_max_velocity:Vector2 = Vector2.DOWN * 75.0
 var wall_jump_force:Vector2 = Vector2.UP * 350.0 + Vector2.RIGHT * 100.0
+var bounce_force:Vector2 = Vector2.UP * 150.0
+var big_bounce_force:Vector2 = Vector2.UP * 350.0
 
 
 var velocity:Vector2
@@ -104,3 +106,17 @@ func _physics_process(delta):
 		$Sprite.flip_h = false
 	# Wall slide animation
 	$WallSlideParticles.emitting = is_wall_slide and not is_on_floor() and velocity.y > 0.0
+
+
+func _on_Feet_area_entered(area):
+	if velocity.y < 0.0:
+		return
+	area.get_parent().get_bounced_on(self)
+	bounce(area.get_parent().global_position)
+
+
+func bounce(from):
+	if Input.is_action_pressed("ui_accept"):
+		velocity.y = big_bounce_force.y
+	else:
+		velocity.y = bounce_force.y

@@ -7,7 +7,7 @@ const IFRAMES = 0.2
 
 export var walk_speed:float = 50.0
 export var hit_points:int = 1
-
+export var dead:float = false
 
 var velocity:Vector2
 var facing_left:bool
@@ -15,6 +15,8 @@ var iframes:float
 
 
 func _physics_process(delta):
+	if dead:
+		return
 	iframes -= delta
 	iframes = max(0.0, iframes)
 	if iframes:
@@ -48,10 +50,27 @@ func hurt(damage:int):
 		die()
 
 
+func turn_off():
+	dead = true
+	collision_layer = 0
+	collision_mask = 0
+	$Sprite.visible = false
+	$LeftWallRayCast.collision_mask = 0
+	$RightWallRayCast.collision_mask = 0
+	$LeftFloorRayCast.collision_mask = 0
+	$RightFloorRayCast.collision_mask = 0
+	$BounceArea.collision_layer = 0
+	$BounceArea.collision_mask = 0
+
+
 func die():
+	turn_off()
+	$AnimationPlayer.play("Die")
+
+
+func get_bounced_on(from):
+	turn_off()
+	$SquishParticles.emitting = true
+	$Timer.start(0.5)
+	yield($Timer, "timeout")
 	queue_free()
-
-
-
-func _on_StompArea_body_entered(body):
-	print("bounce")

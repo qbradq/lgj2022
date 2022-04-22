@@ -22,6 +22,30 @@ tracks/0/keys = {
 "update": 0,
 "values": [ 0.0 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("SquishParticles:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:dead")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
 
 [sub_resource type="Shader" id=7]
 code = "shader_type canvas_item;
@@ -62,6 +86,8 @@ autoplay = "Idle"
 anims/Idle = SubResource( 6 )
 anims/RESET = SubResource( 5 )
 
+[node name="Timer" type="Timer" parent="."]
+
 [node name="Sprite" type="Sprite" parent="."]
 material = SubResource( 8 )
 position = Vector2( 0, -32 )
@@ -93,12 +119,27 @@ cast_to = Vector2( 0, 4 )
 position = Vector2( 0, -32.5 )
 shape = SubResource( 1 )
 
-[node name="StompArea" type="Area2D" parent="."]
+[node name="BounceArea" type="Area2D" parent="."]
 position = Vector2( 0, -72 )
-collision_layer = 0
-collision_mask = 2
+collision_layer = 8
+collision_mask = 16
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StompArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BounceArea"]
 shape = SubResource( 9 )
 
-[connection signal="body_entered" from="StompArea" to="." method="_on_StompArea_body_entered"]
+[node name="SquishParticles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 16
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 1.0
+local_coords = false
+direction = Vector2( 0, 1 )
+spread = 90.0
+gravity = Vector2( 0, 0 )
+initial_velocity = 20.0
+initial_velocity_random = 1.0
+scale_amount = 2.0
+
+[connection signal="body_entered" from="BounceArea" to="." method="_on_StompArea_body_entered"]
